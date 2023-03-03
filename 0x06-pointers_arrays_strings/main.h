@@ -5,4 +5,5 @@
 	char *_strncat(char *dest, char *src, int n);
 	char *leet(char *);
 	char *string_toupper(char *);
+	void print_number(int n);
 #endif
