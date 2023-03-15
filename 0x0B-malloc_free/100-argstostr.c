@@ -1,84 +1,41 @@
 #include "main.h"
-#include <stdio.h>
 #include <stdlib.h>
 /**
- * _wcount - counts number of words
- * @sw: string
- *
- * Return: int
+ * argstostr - main entry
+ * @ac: int input
+ * @av: double pointer array
+ * Return: 0
  */
-int _wcount(char *sw)
+char *argstostr(int ac, char **av)
 {
-	int l, wc;
+	int i, n, r = 0, l = 0;
+	char *str;
 
-	l = 0, wc = 0;
-	if (*(sw + l) == ' ')
-		l++;
-	while (*(sw + l))
-	{
-		if (*(sw + l) == ' ' && *(sw + l - 1) != ' ')
-			wc++;
-		if (*(sw + l) != ' '  && *(sw + l + 1) == 0)
-			wc++;
-		l++;
-	}
-	return (wc);
-}
-/**
- * _trspace - Moves adress to remove trailig whitespaces
- * @st: string
- *
- * Return: Pointer
- */
-char *_trspace(char *st)
-{
-	while (*st == ' ')
-		st++;
-	return (st);
-}
-/**
- * strtow - splits a string into words
- * @str: string
- *
- * Return: Double Pointer
- */
-char **strtow(char *str)
-{
-	char **s, *ts;
-	int l, l2, wc, i, j, fr, k;
+	if (ac == 0 || av == NULL)
+		return (NULL);
 
-	if (str == NULL || *str == 0)
-		return (0);
-	fr = 0;
-	wc = _wcount(str);
-	if (wc == 0)
-		return (0);
-	s = malloc((wc + 1) * sizeof(char *));
-	if (s == 0)
-		return (0);
-	ts = _trspace(str);
-	for (i = 0; i < wc; i++)
+	for (i = 0; i < ac; i++)
 	{
-		l = 0;
-		while (*(ts + l) != ' ' && *(ts + l) != 0)
+		for (n = 0; av[i][n]; n++)
 			l++;
-		s[i] = malloc((l + 1) * sizeof(char));
-		if (s[i] == 0)
-		{
-			fr = 1;
-			break;
-		}
-		for (j = 0, l2 = 0; l2 < l; l2++, j++)
-			s[i][j] = *(ts + l2);
-		s[i][j] = '\0';
-		ts = _trspace(ts + l);
 	}
-	s[i] = NULL;
-	if (fr == 1)
+	l += ac;
+
+	str = malloc(sizeof(char) * l + 1);
+	if (str == NULL)
+		return (NULL);
+	for (i = 0; i < ac; i++)
 	{
-		for (k = 0; k <= i; k++)
-			free(s[k]);
-		free(s);
+	for (n = 0; av[i][n]; n++)
+	{
+		str[r] = av[i][n];
+		r++;
 	}
-	return (s);
+	if (str[r] == '\0')
+	{
+		str[r++] = '\n';
+	}
+	}
+	return (str);
 }
+
